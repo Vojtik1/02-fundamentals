@@ -1,4 +1,9 @@
 # Znakové řetězce mohou být uvozeny jednoduchými i dvojitými uvozovkami
+import random
+import string
+import re
+from unidecode import unidecode
+
 course_name = "Python programming"
 
 '''
@@ -158,3 +163,47 @@ funkční kód, tím lepší).
 3. Vytvořte funkci, která vygeneruje náhodná hesla pro počet osob zadaný v parametru tak, aby heslo začínalo
    3 velkými písmeny, pokračovalo 3 malými písmeny, jedním speciálním znakem (-/+*) a končilo 3 náhodnými číslicemi.
 '''
+
+
+datum_cesky = input("Zadejte datum ve formátu DD. MM. YYYY: ")
+
+datum_databazove = '-'.join(reversed(datum_cesky.split('. ')))
+print(datum_databazove)
+
+"""
+Je třeba nainstalovat modul
+---------------------------
+pip install unidecode
+"""
+def generuj_identifikator(souslovi):
+    souslovi = unidecode(souslovi)
+
+    identifikator_python = '_'.join(souslovi.lower().split())
+
+    identifikator_js = ''.join(word.title() for word in souslovi.split())
+
+    return identifikator_python, identifikator_js
+
+
+souslovi = input("Zadejte sousloví: ")
+
+python_ident, js_ident = generuj_identifikator(souslovi)
+
+print(f"a) {souslovi} = {python_ident}")
+print(f"b) {souslovi} = {js_ident}")
+
+def generuj_heslo(pocet_osob):
+    hesla = []
+    for _ in range(pocet_osob):
+        velka_pismena = ''.join(random.choices(string.ascii_uppercase, k=3))
+        mala_pismena = ''.join(random.choices(string.ascii_lowercase, k=3))
+        spec_znak = random.choice('-/+*')
+        cisla = ''.join(random.choices(string.digits, k=3))
+        heslo = f"{velka_pismena}{mala_pismena}{spec_znak}{cisla}"
+        hesla.append(heslo)
+    return hesla
+
+pocet_osob = int(input("Zadejte počet osob: "))
+
+hesla_pro_osoby = generuj_heslo(pocet_osob)
+print(hesla_pro_osoby)
